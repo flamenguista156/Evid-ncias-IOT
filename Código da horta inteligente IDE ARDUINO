@@ -1,0 +1,35 @@
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+int sensor = A0;
+int LED = 8;
+int nivel_umidade;
+void setup()
+{
+  Serial.begin(9600);
+  
+  pinMode(sensor, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop()
+{
+  lcd.init();
+  lcd.clear();
+  nivel_umidade = analogRead(sensor);
+  Serial.print("\numidade: ");
+  Serial.print(nivel_umidade);
+  
+  if(nivel_umidade > 600 ){
+    lcd.clear();
+    lcd.backlight();
+    lcd.print("ESTOU COM SEDE");
+    digitalWrite(LED, HIGH);
+  }
+  else{
+    lcd.clear();
+    lcd.backlight();
+    lcd.print("HIDRATADA");
+    digitalWrite(LED, LOW);
+  }
+  delay(1000);
+}
